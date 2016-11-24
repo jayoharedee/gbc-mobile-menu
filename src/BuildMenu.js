@@ -35,22 +35,31 @@ const BuildMenu = (function() {
         buildSubLevel(items) {
             if (!items) return ''
 
+
+
+
             let subMenu = ``
             const img = `<img src="/Responsive/images/buttons/grey_arrow.png"
                               alt="Navigation Buttton"
                               title="Navigation Button">`
 
             Utils.loopObj(items, (key, value) => {
-                const nullItems = (value.items)? true : false
+                const hasItems = (value.items)? true : false
+                const containSubMenu = (hasItems)? 'containSubMenu_' : ''
+
+            if (parseInt(value.ItemId) === 83) {
+                console.log(value)
+                console.log(hasItems)
+            }
 
                 subMenu += `
                     <div id="${value.ItemId}" class="accordion">
                         <div class="menu-item level-${_.depth.toString()}">
-                            <div class="arrowFormatting accordion-toggle-collapsed"
-                                    ${(nullItems)? '' : 
-                                    `data-parent="${value.ItemIid}"`}
-                                    data-href="#collapse${value.ItemId}">
-                                ${(!nullItems)? img : '' }
+                            <div class="arrowFormatting accordion-toggle-collapsed ${containSubMenu}"
+                                    data-toggle="collapse"
+                                    ${(hasItems)? `data-parent="${value.ItemId}"` : ''}
+                                    href="#collapse${value.ItemId}">
+                                ${(hasItems)? img : '' }
                             </div>
                             <div class="titleFormatting arrow-tag">
                                 <a href="${value.link}">
@@ -59,7 +68,7 @@ const BuildMenu = (function() {
                             </div>
                         </div>
                         <div id="collapse${value.ItemId}" class="accordion-body collapse">
-                            ${(nullItems)? '' : _.depth++ && _.buildSubLevel(value.items)}
+                            ${(hasItems)? _.depth++ && _.buildSubLevel(value.items) : ''}
                         </div>
                     </div>
                 `
