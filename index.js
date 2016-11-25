@@ -20,7 +20,7 @@ Utils
             const items = (value.items)? value.items : null
 
             // Builds an HTML string containing the mobile menu
-            menuHtml += BuildMenu.build(value.ItemId, value.title, value.link, items)
+            menuHtml += BuildMenu.build(value.ItemId, value.title, value.link, value.pid, value.level, items)
         })
         
         return menuHtml
@@ -35,3 +35,4 @@ Utils
                 writeFileSync('mobile-menu.html', result.html)
             })
     })
+

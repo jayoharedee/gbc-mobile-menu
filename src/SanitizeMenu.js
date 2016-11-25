@@ -7,7 +7,8 @@ class SanitizeMenu extends Menu {
         let {
             ItemId: i,
             ItemTitle: t,
-            ItemLink: h
+            ItemLink: h,
+            ItemLevel: level
         } = obj
 
         if (obj.hasOwnProperty('Menu')) { 
@@ -31,7 +32,8 @@ class SanitizeMenu extends Menu {
             link: (!h?l:h),
             items: items,
             pid: pid,
-            menu: menu
+            menu: menu,
+            level: level
         }
 
     }
@@ -55,7 +57,9 @@ class SanitizeMenu extends Menu {
                     node[c.ItemId].items = subItems
                 } else {
                     let subItems = this.unpackObj(items)
-                    node[c.ItemId].items = subItems
+
+                    node[c.ItemId].items = {}
+                    node[c.ItemId].items[subItems.ItemId] = subItems
                 }
             })
 

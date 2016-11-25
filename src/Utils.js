@@ -12,11 +12,9 @@ const Utils = (function() {
         },
 
         objectLooper(obj, cb) {
-            return new Promise((resolve, reject) => {
-                for (let [key, value] of _.forOfGen(obj)) {
-                    cb(key, value)
-                }
-            })
+            for (let [key, value] of _.forOfGen(obj)) {
+                cb(key, value)
+            }
         },
 
         readFileAsync(filename) {
