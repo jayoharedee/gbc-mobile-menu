@@ -4,14 +4,12 @@ import Utils from './Utils'
 
 const BuildMenu = (function() {
     var _ = {
-        depth: 2,
-
         imgTag: `<img src="/Responsive/images/buttons/grey_arrow.png"
                       alt="Navigation Buttton"
                       title="Navigation Button">`,
 
 
-        buildTopDiv(id, title, href, pid, level, items = null) {
+        buildTopDiv(id, title, href, pid, level, cid, items = null) {
             if (!id) return ''
 
             const hasItems = (items !== null)? true : false
@@ -25,7 +23,7 @@ const BuildMenu = (function() {
                         </div>
                         <div class="titleFormatting arrow-tag">
                             <a href="${href}">
-                                <div class="menu-title">${title}</div>
+                                <div class="menu-title" data-cid="${cid}">${title}</div>
                             </a>
                         </div>
                     </div>
@@ -41,10 +39,6 @@ const BuildMenu = (function() {
 
             let subMenu = ``
 
-            const img = `<img src="/Responsive/images/buttons/grey_arrow.png"
-                              alt="Navigation Buttton"
-                              title="Navigation Button">`
-
             Utils.loopObj(items, (key, value) => {
                 if (!value) return
 
@@ -59,20 +53,19 @@ const BuildMenu = (function() {
                                     ${(hasItems)? `data-parent="${value.ItemId}"` : ''}
                                     href="#collapse${value.ItemId}"
                                     pid="${value.pid}">
-                                ${(hasItems)? img : '' }
+                                ${(hasItems)? _.imgTag : '' }
                             </div>
                             <div class="titleFormatting arrow-tag">
                                 <a href="${value.link}">
-                                    <div class="menu-title">${value.title}</div>
+                                    <div class="menu-title" data-cid="${value.cid}">${value.title}</div>
                                 </a>
                             </div>
                         </div>
                         <div id="collapse${value.ItemId}" class="accordion-body collapse">
-                            ${(hasItems)? _.depth++ && _.buildSubLevel(value.items) : ''}
+                            ${(hasItems)? _.buildSubLevel(value.items) : ''}
                         </div>
                     </div>
                 `
-                _.depth = 2
             })
 
             return subMenu

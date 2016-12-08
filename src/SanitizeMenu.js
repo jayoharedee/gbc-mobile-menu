@@ -1,4 +1,7 @@
 import Menu from './Menu'
+import Utils from './Utils'
+
+import { writeFileSync } from 'fs'
 
 class SanitizeMenu extends Menu {
     unpackObj(obj) {
@@ -26,16 +29,21 @@ class SanitizeMenu extends Menu {
             }
         }
 
-        return {
+        // Ektron sometimes uses a variation in keys for a menu's href
+        // either ItemLink or just Link. This ternary solves that dilemna
+        const alias = (!h?l:h)
+
+        let menuObj =  {
             ItemId: i,
             title: t,
-            link: (!h?l:h),
+            link: alias,
             items: items,
             pid: pid,
             menu: menu,
             level: level
         }
 
+        return menuObj
     }
 
     makeTree(categories) {
@@ -45,21 +53,28 @@ class SanitizeMenu extends Menu {
 
         categories
             .forEach(c => {
+                // prepending _ so keys are not sorted numerically
+                const key = `_${c.ItemId}` 
+
                 // first menu node
-                node[c.ItemId] = this.unpackObj(c)
+                node[key] = this.unpackObj(c)
 
                 // subitems
-                let items = node[c.ItemId].items
+                let items = node[key].items
                 if (!items) return
 
                 if (Array.isArray(items) && items !== undefined) {
                     let subItems = this.makeTree(items)
-                    node[c.ItemId].items = subItems
+                    node[key].items = subItems
                 } else {
                     let subItems = this.unpackObj(items)
 
-                    node[c.ItemId].items = {}
-                    node[c.ItemId].items[subItems.ItemId] = subItems
+                    // key for submenu items. Prepended _ so the sort is not 
+                    // numerical as all keys are numbered ID's
+                    const subKey = '_' + subItems.ItemId
+
+                    node[key].items = {}
+                    node[key].items[subKey] = subItems
                 }
             })
 

@@ -1,7 +1,7 @@
+import http from 'https'
 import { writeFileSync } from 'fs'
 import posthtml from 'posthtml'
 import beautify from 'posthtml-beautify'
-import fetch from 'fetch'
 
 import SanitizeMenu from './src/SanitizeMenu'
 import BuildMenu from './src/BuildMenu'
@@ -20,7 +20,15 @@ Utils
             const items = (value.items)? value.items : null
 
             // Builds an HTML string containing the mobile menu
-            menuHtml += BuildMenu.build(value.ItemId, value.title, value.link, value.pid, value.level, items)
+            menuHtml += BuildMenu.build(
+                value.ItemId, 
+                value.title, 
+                value.link, 
+                value.pid, 
+                value.level, 
+                value.cid,
+                items
+            )
         })
         
         return menuHtml
@@ -35,4 +43,3 @@ Utils
                 writeFileSync('mobile-menu.html', result.html)
             })
     })
-

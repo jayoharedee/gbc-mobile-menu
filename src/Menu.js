@@ -13,7 +13,7 @@ class Menu {
 
     writeJson() {
         const menuJson = this.parseMenuJson()
-        
+
         const node = this.makeTree(menuJson)
         const jsonOutput = JSON.stringify(node, null, 4)
         
