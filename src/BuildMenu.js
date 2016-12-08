@@ -45,6 +45,11 @@ const BuildMenu = (function() {
                 const hasItems = (value.items)? true : false
                 const containSubMenu = (hasItems)? 'containSubMenu_' : ''
 
+
+                if (value.pid === undefined) {
+                    return
+                }
+
                 subMenu += `
                     <div id="${value.ItemId}" class="accordion">
                         <div class="menu-item level-${value.level}" data-level="${value.level}">

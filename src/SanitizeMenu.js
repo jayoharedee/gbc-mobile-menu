@@ -11,7 +11,8 @@ class SanitizeMenu extends Menu {
             ItemId: i,
             ItemTitle: t,
             ItemLink: h,
-            ItemLevel: level
+            ItemLevel: level,
+            ItemIdString: idString
         } = obj
 
         if (obj.hasOwnProperty('Menu')) { 
@@ -32,6 +33,16 @@ class SanitizeMenu extends Menu {
         // Ektron sometimes uses a variation in keys for a menu's href
         // either ItemLink or just Link. This ternary solves that dilemna
         const alias = (!h?l:h)
+
+
+        // For some reason the Ektron XML does not include a parent ID
+        // Instead, the parent ID can be parsed from the ItemIdString prop
+        // The parent is always the second element when splitting the string
+        // at every _
+        if (pid === undefined) {
+            pid = idString.split('_')[2]
+        }
+
 
         let menuObj =  {
             ItemId: i,
